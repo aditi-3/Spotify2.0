@@ -27,8 +27,9 @@ jobs:
       - name: Debug
         run: |
           echo "Debugging..."
+          cd frontend
           pwd
-          ls -la
+          ls
           echo "Environment variables:"
           printenv
           echo "Node version:"
