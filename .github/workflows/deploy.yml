@@ -1,4 +1,5 @@
 name: Deploy static content to Pages
+
 on:
   push:
     branches: [ 'main' ]
@@ -18,9 +19,11 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      # Checkout the repository
       - name: Checkout
         uses: actions/checkout@v3
 
+      # Debug information
       - name: Debug
         run: |
           echo "Debugging..."
@@ -34,29 +37,26 @@ jobs:
           echo "NPM version:"
           npm -v
 
+      # Set up Node.js
       - name: Setup Node
         uses: actions/setup-node@v3
         with:
-          node-version: '18'
+          node-version: 20
           cache: 'npm'
+          cache-dependency-path: frontend/package-lock.json
 
-      # Clear npm cache and install a specific version of npm to avoid any issues with the default version
-      - name: Install specific npm version
-        run: npm install -g npm@6
-
-      # Install dependencies using npm ci (faster and more reliable with lock files)
+      # Install dependencies (use the frontend directory explicitly)
       - name: Install dependencies
         run: |
-          npm ci --verbose
+          npm ci
         working-directory: ./frontend
 
-      # Build the project
+      # Build the Vite project
       - name: Build
-        run: |
-          npm run build --verbose
+        run: npm run build
         working-directory: ./frontend
 
-      # Deploy the project to GitHub Pages
+      # Deploy to GitHub Pages
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
