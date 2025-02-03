@@ -16,12 +16,17 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
-      - name: List files
-        run: ls -la
-      - name: Change directory
-        run: cd frontend
-      - name: List files in frontend directory
-        run: ls -la
+      - name: Debug
+        run: |
+          echo "Debugging..."
+          pwd
+          ls -la
+          echo "Environment variables:"
+          printenv
+          echo "Node version:"
+          node -v
+          echo "NPM version:"
+          npm -v
       - name: Setup Node
         uses: actions/setup-node@v3
         with:
